@@ -15,6 +15,17 @@ Digital Heroes is a subscription-driven web platform designed exclusively for go
 
 ---
 
+## 🔐 Reviewer Access (Test Account)
+
+For evaluators reviewing this deployed application, you may access the locked Admin features (Draw Algorithm Engine, Winner Verifications) without modifying database constraints by logging in with this pre-configured Admin account:
+
+* **Email:** `testemail@gmail.com`
+* **Password:** `Test@1234`
+
+*Note: This test account already has `is_admin` privileges and an active dummy Stripe subscription assigned in the backend.*
+
+---
+
 ## 🚀 Features
 
 ### Player Dashboard
