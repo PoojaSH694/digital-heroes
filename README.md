@@ -2,59 +2,86 @@
 
 > **Play Golf. Win Prizes. Change Lives.**
 
-Digital Heroes is a modern, subscription-driven web platform designed exclusively for golfers. By combining the thrill of the game with the power of charitable giving, Digital Heroes allows players to log their monthly scores, automatically enter into a massive prize draw, and generate real-world funds for charities in need.
+Digital Heroes is a subscription-driven web platform designed exclusively for golfers. By combining the thrill of the game with the power of charitable giving, Digital Heroes allows players to log their monthly scores, enter into a mathematical prize draw, and generate real-world funds for charities in need.
+
+---
+
+## 🌟 The Core Concept
+
+1. **Subscribe:** Users pay a monthly (£19.99) or yearly (£199.00) fee. **10%** of their subscription goes directly to a charity of their choice.
+2. **Play Golf:** Users play local rounds of golf and log their Stableford scores via their dashboard.
+3. **The Draw:** The platform grabs each user's oldest 5 rolling scores to act as their active "ticket" for the month.
+4. **Win Prizes:** An algorithmic draw generates 5 winning numbers based on all submitted scores. Match 3, 4, or all 5 numbers to win a share of the calculated prize pool.
+
+---
+
+## 🚀 Features
+
+### Player Dashboard
+* **Score Manager:** A responsive wizard to input and track up to 45-point Stableford scores.
+* **Charity Impact Metrics:** Real-time tracking of generated charitable donations.
+* **Rolling 5-Score Algorithm:** The database strictly enforces 5 concurrent entries per user. Inputting a 6th score automatically drops the oldest score, keeping the active draw numbers fresh.
+
+### Admin Control Center
+* **Draw Engine Pipeline:** Run simulations to ensure the algorithm generates fair, profitable, and exciting draw scenarios before publishing official results.
+* **Winner Verification:** Built-in safeguards requiring winners to submit photographic proof of their scorecards.
+* **Global Metrics:** Real-time metrics on the size of the active prize pool, jackpot rollovers, and active subscriber count.
 
 ---
 
 ## 🛠️ Technology Stack
 
-* **Framework:** Next.js 14 App Router
-* **Styling:** Tailwind CSS + Framer Motion
-* **Database & Auth:** Supabase (PostgreSQL with Row Level Security)
+Digital Heroes is built for speed, security, and scalability using a modern React ecosystem:
+* **Framework:** Next.js 14 (App Router)
+* **Styling:** Tailwind CSS & Framer Motion
+* **Database & Auth:** Supabase (PostgreSQL with Row Level Security policies)
 * **Payments:** Stripe Checkout & Webhooks
 
 ---
 
-## 🧪 Evaluator & Reviewer Testing Guide
+## 📥 Local Development Quickstart
 
-If you are grading or evaluating this project, please follow this step-by-step guide to test the full lifecycle of the platform locally without needing to configure advanced background webhook processes.
+To run the platform locally, ensure you have Node.js and a connected Supabase project.
 
-### 1. User Signup & The Dashboard
-To test the core player loop:
-1. Run the local development server (`npm run dev`).
-2. Navigate to `http://localhost:3000/signup`.
-3. Create an account with a test email (e.g., `evaluator@test.com`) and select a charity.
-4. You will be sent to the Stripe Checkout page. Because this is local development, **the Stripe webhook that automatically verifies payments will not trigger your local database unless you run `stripe listen` via the Stripe CLI**. 
-5. To bypass this, after signing up, simply navigate directly to **`http://localhost:3000/dashboard`**.
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/PoojaSH694/digital-heroes.git
+   cd digital-heroes
+   ```
 
-### 2. Logging Scores
-1. On the user dashboard, click **"+ Add New Score"**.
-2. Input a Stableford score (1-45).
-3. **Important:** Add exactly 5 scores. The Draw Engine requires a user to have a minimum of 5 "monthly" scores to qualify as an active participant.
+2. **Install dependencies:**
+   ```bash
+   npm install
+   ```
 
-### 3. Granting Yourself Admin Access (Manual Database Bypass)
-To view the Admin Panel, evaluate the Draw Algorithm, and see the platform health metrics, you must grant your test account Admin permissions.
-1. Open the [Supabase Dashboard](https://supabase.com/dashboard/projects) for this project.
-2. Navigate to the **Table Editor** -> **`profiles`** table.
-3. Locate the row with your test email (`evaluator@test.com`).
-4. Change the **`is_admin`** column to `TRUE`.
-5. Change the **`subscription_status`** column from `inactive` to `active`. *(This manually simulates a successful Stripe Webhook payment).*
+3. **Database Setup:**
+   Run the `schema.sql` file in your Supabase SQL Editor to instantly generate the tables, RLS security policies, and seed data.
 
-### 4. Running The Draw Engine
-1. Return to the application and navigate to **`http://localhost:3000/admin`**.
-2. You will now see the Admin Control Center, confirming your Admin override worked!
-3. Click on **Draw Management** in the sidebar.
-4. Select the **Random** Draw Method and click **"Generate Numbers & Run Simulation"**.
-5. The algorithm will process your 5 scores against 5 random winning numbers and output a transparent breakdown of payouts and charitable contributions!
+4. **Environment Variables:**
+   Create a `.env.local` file in the root directory and configure your keys:
+   ```env
+   NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
+   SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
 
----
+   NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=your_stripe_pub_key
+   STRIPE_SECRET_KEY=your_stripe_secret_key
+   STRIPE_WEBHOOK_SECRET=your_stripe_webhook_secret
+   STRIPE_MONTHLY_PRICE_ID=your_monthly_price_id
+   STRIPE_YEARLY_PRICE_ID=your_yearly_price_id
+   ```
 
-## 🌟 Core Business Logic Highlights
-
-* **The Rolling 5-Score Algorithm:** The database strictly enforces 5 entries per user per month. The moment a user inputs a 6th score, the oldest score is mathematically popped off the stack, ensuring the user's lottery "ticket" always represents their 5 most recent games of golf.
-* **Algorithmic Security:** The `draw_entries` generated during simulations and official publishes are strictly read-only for standard users via Row Level Security (RLS) policies.
-* **Charitable Guarantee:** The user's `charity_contribution_percent` is algorithmically factored into the platform's overall margin predictions before any "four-number" or "five-number" prize pool math is calculated, guaranteeing charitable obligations are met prior to user payouts.
+5. **Run the development server:**
+   ```bash
+   npm run dev
+   ```
 
 ---
 
-*Project developed and submitted for evaluation.*
+## 📝 Testing Guidelines
+
+When testing locally without a live Stripe Webhook CLI proxy, user subscriptions will default to `inactive`. To fully test the Draw Engine algorithm, manually update a test user account's `subscription_status` to `active` and `is_admin` to `true` within the Supabase Table Editor. This grants full access to the `/admin` portal and ensures the user is processed in the prize simulation.
+
+---
+
+*Designed and developed by Pooja S. Hegde.*
