@@ -2,26 +2,47 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap');
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --primary: #0A2E1E;       /* deep forest green */
+  --accent: #C9A84C;        /* warm gold */
+  --accent-light: #EDD97A;  /* gold highlight */
+  --bg: #F7F5F0;            /* warm off-white */
+  --surface: #FFFFFF;
+  --text: #1A1A1A;
+  --text-muted: #6B7280;
+  --success: #22C55E;
+  --danger: #EF4444;
+  --radius: 12px;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Playfair Display', serif;
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'DM Sans', sans-serif;
+  background-color: var(--bg);
+  color: var(--text);
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
+@layer base {
+  body {
+    @apply bg-[#F7F5F0] text-[#1A1A1A];
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply px-6 py-3 bg-[#C9A84C] text-[#0A2E1E] font-bold rounded-[12px] hover:bg-[#EDD97A] transition-all duration-300 active:scale-95 shadow-lg;
+  }
+  
+  .btn-ghost {
+    @apply px-6 py-3 border-2 border-[#C9A84C] text-[#C9A84C] font-semibold rounded-[12px] hover:bg-[#C9A84C]/10 transition-all duration-300;
+  }
+
+  .card {
+    @apply bg-white p-6 rounded-[12px] shadow-sm border border-gray-100;
   }
 }
